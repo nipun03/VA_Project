@@ -34,17 +34,17 @@ $(document).ready(function(){
 
 
 function loadDashboard() {
-    d3.csv("https://raw.githubusercontent.com/nipun03/VA_Project/master/LendingTreeDataSet.csv", function(error, data) {
+    d3.csv("https://raw.githubusercontent.com/nipun03/VA_Project/master/Data/LendingTreeDataSet.csv", function(error, data) {
         if (error) throw error;
         dataset = data;
 
-        d3.tsv("https://raw.githubusercontent.com/nipun03/VA_HW_4/master/Data/us-state-names.tsv", function(error, state_names) {
+        d3.tsv("https://raw.githubusercontent.com/nipun03/VA_Project/master/Data/us-state-names.tsv", function(error, state_names) {
 
             for (var i = 0; i < state_names.length; i++) {
                 state_name_map[state_names[i].id] = state_names[i].code;
             }
 
-            d3.json("https://raw.githubusercontent.com/nipun03/VA_HW_4/master/Data/us-10m.json", function(error, us) {
+            d3.json("https://raw.githubusercontent.com/nipun03/VA_Project/master/Data/us-10m.json", function(error, us) {
                 usdata = us
                 if (error) throw error;
                 createBarChart()
