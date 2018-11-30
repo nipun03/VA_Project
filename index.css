@@ -1,3 +1,139 @@
+html, body {
+            padding:0;
+            margin:0;
+            font-family: "Arial", sans-serif;
+        }
+        
+        header {
+            background-color: #424242;
+            width: 100%;
+            text-align: center;
+            padding: 1px;
+            margin: 0;
+            color: white;
+        }
+        
+        .sidebar {
+            float: left;
+/*            border: 1px solid #ccc;*/
+            padding: 0 20px;
+            padding-bottom: 20px;
+            width: 200px;
+        }
+        
+        h3 {text-decoration: underline;}
+        
+        input[type=radio] {
+            margin: 10px;
+            cursor: pointer;
+        }
+        
+        label {
+            cursor: pointer;
+        }
+        
+        table {
+            float: left;
+/*            border: 1px solid black;*/
+/*            padding-left: 100px;*/
+        }
+        
+        table td h2 span {
+            font-size: .7em;
+        }
+        
+        .map-row {
+            text-align: center;
+            
+        }
+        
+        .map-row td {
+            padding-left: 100px;
+/*            border: 1px solid black;*/
+        }
+        
+        .map-row h3 {
+            text-decoration: none;
+        }
+        
+        .map-row h3 span {
+            color: #2aed93;
+            font-weight: normal;
+        }
+        
+        .bar-row td {
+/*            border: 1px solid black;*/
+        }
+        
+        .bar-row td div {
+/*            border: 1px solid aqua; */
+        }
+        
+        .bar-row td .h2 {
+            width: 50%;
+            height: 70px;
+        }
+        
+        .bar-row td div h2 {
+            float: right;
+        }
+        
+        .bar-row td .h2 span {
+            color: gray;
+            font-weight: normal;
+        }
+        
+        #form_start, #form_complete {
+            width: 30%;
+            height: 50px;
+            float: left;
+            clear: both;
+            margin-top: 5px;
+            border-right: 4px solid #ddd;
+        }
+        
+        #form_start h3, #form_complete h3 {
+            float: right;
+            margin:15px;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+        
+        .bar-row td .barchart {
+            float: left;
+            margin-top:5px;
+            width: 66%;
+            height: 40px;
+        }
+        
+        .overview {
+            float: right;
+/*            width: 400px;*/
+/*            height: 450px;*/
+            margin: 30px 30px 0 0;
+            padding: 20px 30px;
+            border: 1px solid #ccc;
+            box-shadow: 5px 10px 18px #888888;
+        }
+        
+        .overview h3 {
+            margin: 25px 0 0 20px;
+        }
+        
+        .overview p {
+            margin: 10px;
+            margin-left: 20px;
+            color: gray;
+        }
+
+
+
+
+
+
+
+
+
  .states :hover {
         fill: red;
     }
@@ -60,13 +196,6 @@
     .x-axis {
         fill: #000;
     }
-
-    body {
-        margin: 15px;
-        background-color: #F1F3F3
-    }
-
-
 
     .axis path,
     .axis line {

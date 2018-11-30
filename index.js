@@ -26,8 +26,15 @@ var quantize = d3.scaleQuantize()
     }));
 
 
+$(document).ready(function(){
+	$('input[type=radio]').click(function(){
+		console.log($(this).val())
+	})
+});
+
+
 function loadDashboard() {
-    d3.csv("https://media.githubusercontent.com/media/nipun03/VA_Project/master/LendingTreeModified.csv", function(error, data) {
+    d3.csv("https://raw.githubusercontent.com/nipun03/VA_Project/master/LendingTreeDataSet.csv", function(error, data) {
         if (error) throw error;
         dataset = data;
 
@@ -56,9 +63,9 @@ function createBarChart(state_name = "") {
             top: 10,
             right: 10,
             bottom: 30,
-            left: 200
+            left: 5
         },
-        width = 800 - margin.left - margin.right,
+        width = 400 - margin.left - margin.right,
         height = 70 - margin.top - margin.bottom;
 
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
@@ -171,7 +178,7 @@ function createMap(damage_name = "") {
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
-                    return g.count;
+                    return g.Total;
                 });
             })
             .entries(dataset);
@@ -183,7 +190,7 @@ function createMap(damage_name = "") {
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
-                    return g.count;
+                    return g.Total;
                 });
             })
             .entries(dataset.filter(function(d) {
