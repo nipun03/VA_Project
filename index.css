@@ -58,6 +58,7 @@ html, body {
         
         .map-row h3 span {
             color: #2aed93;
+            color: #22c177ff;
             font-weight: normal;
         }
         
@@ -126,8 +127,16 @@ html, body {
             color: gray;
         }
 
+        p span {
+            color: #2aed93;
+            color: #22c177ff;
+        }
 
-
+        #reset {
+            cursor: pointer;
+            color: #22c177ff;
+            text-decoration: underline;
+        }
 
 
 

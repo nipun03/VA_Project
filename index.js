@@ -28,8 +28,19 @@ var quantize = d3.scaleQuantize()
 
 $(document).ready(function(){
 	$('input[type=radio]').click(function(){
-		console.log($(this).val())
-	})
+		console.log($(this).val());
+        createMap($(this).val());
+	});
+
+    $("#reset").click(function(){
+        // console.log()
+        createMap($('input[name=filter]:checked').val());
+        createBarChartStart();
+        createBarChartSubmit();
+        $(this).css("display", "none");
+        $('.overview').css("display", "none");
+        // createBarChart();
+    });
 });
 
 
@@ -47,14 +58,17 @@ function loadDashboard() {
             d3.json("https://raw.githubusercontent.com/nipun03/VA_Project/master/Data/us-10m.json", function(error, us) {
                 usdata = us
                 if (error) throw error;
-                createBarChart()
-                createMap()
+                createBarChartStart();
+                createBarChartSubmit();
+                createMap();
             });
         });
     });
 }
 
-function createBarChart(state_name = "") {
+
+
+function createBarChartStart(state_name = "") {
 
     $('#bar_chart').empty();
 
@@ -88,6 +102,7 @@ function createBarChart(state_name = "") {
                 });
             })
             .entries(dataset);
+
 
     } else {
         $("#state_label").html(state_name);
@@ -125,7 +140,7 @@ function createBarChart(state_name = "") {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) {
-            return parseInt(d / 1000);
+            return parseInt(d);
         }).tickSizeInner([-height]));
 
     g.append("g")
@@ -150,56 +165,153 @@ function createBarChart(state_name = "") {
             return "rgb(" + color.r + "," + color.g +
                 "," + color.b + ")";
         })
-        .on("mousemove", function(d) {
-            createMap(d.key)
-            tooltip
-                .style("left", d3.event.pageX - 50 + "px")
-                .style("top", d3.event.pageY - 70 + "px")
-                .style("display", "inline-block")
-                .html((d.key) + "<br>" + "$" + (d.value));
-        })
-        .on("mouseout", function(d) {
-            createMap()
-            tooltip.style("display", "none");
-        });
 }
 
-function createMap(damage_name = "") {
+
+function createBarChartSubmit(state_name = "") {
+
+    $('#bar_chart_2').empty();
+
+    var svg = d3.select("#bar_chart_2"),
+        margin = {
+            top: 10,
+            right: 10,
+            bottom: 30,
+            left: 5
+        },
+        width = 300 - margin.left - margin.right,
+        height = 70 - margin.top - margin.bottom;
+
+    var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+    var x = d3.scaleLinear().range([0, width]);
+    var y = d3.scaleBand().range([height, 0]);
+
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    if (state_name == "") {
+        $("#state_label").html("All");
+        mydata = d3.nest()
+            .key(function(d) {
+                return "Form Complete";
+            })
+            .rollup(function(d) { 
+                return d3.sum(d, function(g) {
+                    return g.Form_Submit;
+                });
+            })
+            .entries(dataset);
+            
+
+    } else {
+        $("#state_label").html(state_name);
+        mydata = d3.nest()
+            .key(function(d) {
+                return "Form Complete";
+            })
+            .rollup(function(d) { 
+                return d3.sum(d, function(g) {
+                    return g.Form_Submit;
+                });
+            })
+            .entries(dataset.filter(function(d) {
+                return d.State_Abv == state_name;
+            }));
+    }
+
+
+
+    console.log(mydata);
+
+    mydata.sort(function(a, b) {
+        return b.value - a.value;
+    });
+
+    x.domain([0, d3.max(mydata, function(d) {
+        return d.value;
+    })]);
+
+    y.domain(mydata.map(function(d) {
+        return d.key;
+    })).padding(0.1);
+
+    g.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) {
+            return parseInt(d);
+        }).tickSizeInner([-height]));
+
+    g.append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(y));
+
+    g.selectAll(".bar")
+        .data(mydata)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", 0)
+        .attr("height", y.bandwidth())
+        .attr("y", function(d) {
+            return y(d.key);
+        })
+        .attr("width", function(d) {
+            return x(d.value);
+        })
+        .style("fill", function(d) {
+            var i = quantize(d.value);
+            var color = colors[i].getColors();
+            return "rgb(" + color.r + "," + color.g +
+                "," + color.b + ")";
+        })
+}
+
+function createMap(product_reporting = "") {
     var svg = d3.select("#choropleth_map");
     var path = d3.geoPath();
     var SCALE = 0.7;
 
+    var total_visits = 0;
 
-    if (damage_name == "") {
-        $("#damage_label").html("All");
+    console.log("Product Reporting: " + product_reporting);
+
+    if (product_reporting == "") {
+        $("#barchart_heading").html("All Forms ");
+        $("#bch_span").html("(No filter applied)");
+        // $("#bch_span").html("(No filter applied)");
         mydata = d3.nest()
             .key(function(d) {
                 return d.State_Code;
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
+                    total_visits = g.Total;
                     return g.Total;
                 });
             })
             .entries(dataset);
     } else {
-        $("#damage_label").html(damage_name);
+        $("#barchart_heading").html(product_reporting);
+        $("#bch_span").html("(Filter applied)");
+        // $("#barchart_heading").children()[0].html("(Filter applied)");?\
         mydata = d3.nest()
             .key(function(d) {
                 return d.State_Code;
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
-                    return g.Total;
+                    total_visits = g.Total;
+                    if (product_reporting === 'Refinance') return g.Refinance;
+                    if (product_reporting === 'Browsing') return g.Browsing;
+                    if (product_reporting === 'Personal') return g.Personal;
+                    if (product_reporting === 'Purchase') return g.Purchase;
+                    if (product_reporting === 'Housing') return g.Housing;
+                    if (product_reporting === 'Auto') return g.Auto;
                 });
             })
-            .entries(dataset.filter(function(d) {
-                return d.States == damage_name;
-            }));
+            .entries(dataset);
     }
-
-
-   console.log(mydata);
 
 
     name_id_map = {};
@@ -220,6 +332,54 @@ function createMap(damage_name = "") {
 
     }
 
+    express_data = d3.nest()
+            .key(function(d) {
+                return d.State_Code;
+            })
+            .rollup(function(d) { 
+                return d3.sum(d, function(g) {
+                    return g.Express_Visited;
+                });
+            })
+            .entries(dataset);
+
+
+    express_map = {};
+
+    for (var i = 0; i < express_data.length; i++) {
+
+        var expressState = express_data[i].key;
+        var expressValue = express_data[i].value;
+        express_map[expressState] = expressValue;
+        // console.log("ExpressMap[" + expressState + "]: " + expressValue)
+
+    }
+
+    auth_data = d3.nest()
+            .key(function(d) {
+                return d.State_Code;
+            })
+            .rollup(function(d) { 
+                return d3.sum(d, function(g) {
+                    return g.TreeAuthID;
+                });
+            })
+            .entries(dataset);
+
+
+    auth_map = {};
+
+    for (var i = 0; i < auth_data.length; i++) {
+
+        var authState = auth_data[i].key;
+        var authValue = auth_data[i].value;
+        auth_map[authState] = authValue;
+        // console.log("authmap[" + authState + "]: " + authValue)
+
+    }
+
+    // console.log("MY DATA: " + auth_data[0].key);
+    //Montana 30 NewYork 36 Utah 49
     
     svg.append("g")
         .attr("class", "categories-choropleth")
@@ -239,14 +399,40 @@ function createMap(damage_name = "") {
                 return "";
             }
         })
+        .on("click", function(d) {
+            $('#reset').css("display","inline-block");
+            createBarChartStart(state_name_map[parseInt(d.id)])
+            createBarChartSubmit(state_name_map[parseInt(d.id)])
+            console.log("d.id: " + d.id);
+            var val = name_id_map[parseInt(d.id)];
+
+            var val_express = express_map[parseInt(d.id)];
+            var val_auth = auth_map[parseInt(d.id)];
+            $('#total_visits').find("span").html(val);
+            $('#primary_channel').find("span").html("Google");
+            $('#express_offers').find("span").html(val_express);
+            $('#signups').find("span").html(val_auth);
+
+            $('#top_form_1').find("span").html("Refinance");
+            $('#top_form_2').find("span").html("Browsing");
+            
+            console.log("state_name_map[" + parseInt(d.id) + "]: " + state_name_map[parseInt(d.id)]);
+
+            if (state_name_map[parseInt(d.id)] === 'NY' || state_name_map[parseInt(d.id)] === 'MT' || state_name_map[parseInt(d.id)] === 'UT')
+                $('#top_form_3').find("span").html("Purchase");
+            else 
+                $('#top_form_3').find("span").html("Personal");
+
+            $(".overview").css("display", "inline-block");
+            
+        })
         .on("mousemove", function(d) {
-            createBarChart(state_name_map[parseInt(d.id)])
             var html = "";
             var val = name_id_map[parseInt(d.id)];
             html += "<div class=\"tooltip_kv\">";
             html += "<span class=\"tooltip_key\">";
             html += state_name_map[parseInt(d.id)];
-            html += " : ";
+            html += " Total Visits : ";
             html += val;
             html += "</span>";
             html += "</div>";
@@ -271,8 +457,8 @@ function createMap(damage_name = "") {
             }
         })
         .on("mouseout", function() {
-            createBarChart()
-            $(this).attr("fill-opacity", "1.0");
+            // createBarChart()
+            // $(this).attr("fill-opacity", "1.0");
             $("#tooltip-container").hide();
         });
 

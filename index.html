@@ -3,8 +3,11 @@
     <head>
         <title>Lending Tree Analytics</title>
         <meta charset="utf-8">
-         <link rel="stylesheet" href="index.css">
-         <script src="https://d3js.org/d3.v4.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="stylesheet" href="index.css">
+        <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="https://d3js.org/topojson.v2.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="index.js"></script>
@@ -17,28 +20,19 @@
     </head>
     <body>
         <header>
-            <h1>Lending Tree Analytics</h1>
+            <h1>Site Visit Behavior</h1>
         </header>
 
         <div class="sidebar">
             <h3>Product Reporting</h3>
             <form id="filter_form">
-                <input type="radio" name="filter" value="none" id="none" checked>                   <label for="none">All Forms</label>                     <br>
-                <input type="radio" name="filter" value="refinance" id="refinance">                 <label for="refinance">Refinance</label>                <br>
-                <input type="radio" name="filter" value="browsing" id="browsing">                   <label for="browsing">Browsing</label>                  <br>
-                <input type="radio" name="filter" value="personal" id="personal">                   <label for="personal">Personal</label>                  <br>
-                <input type="radio" name="filter" value="purchase" id="purchase">                   <label for="purchase">Purchase</label>                  <br>
-                <input type="radio" name="filter" value="housing" id="housing">                     <label for="housing">Housing</label>                    <br>
-                <input type="radio" name="filter" value="auto" id="auto">                           <label for="auto">Auto</label>                          <br>
-                <input type="radio" name="filter" value="reverse_mortgage" id="reverse_mortgage">   <label for="reverse_mortgage">Reverse Mortgage</label>  <br>
-                <input type="radio" name="filter" value="business_loans" id="business_loans">       <label for="business_loans">Business Loans</label>      <br>
-                <input type="radio" name="filter" value="debt_relief" id="debt_relief">             <label for="debt_relief">Debt Relief</label>            <br>
-                <input type="radio" name="filter" value="credit_analyzer" id="credit_analyzer">     <label for="credit_analyzer">Credit Analyzer</label>    <br>
-                <input type="radio" name="filter" value="prequalification" id="prequalification">   <label for="prequalification">Prequalification</label>  <br>
-                <input type="radio" name="filter" value="student_loan" id="student_loan">           <label for="student_loan">Student Loan</label>          <br>
-                <input type="radio" name="filter" value="auto_purchase" id="auto_purchase">         <label for="auto_purchase">Auto Purchase</label>        <br>
-                <input type="radio" name="filter" value="auto_refinance" id="auto_refinance">       <label for="auto_refinance">Auto Refinance</label>      <br>
-                <input type="radio" name="filter" value="credit_card" id="credit_card">             <label for="credit_card">Credit Card</label>            <br>
+                <input type="radio" name="filter" value=""          id="none" checked>              <label for="none">All Forms</label>                     <br>
+                <input type="radio" name="filter" value="Refinance" id="refinance">                 <label for="refinance">Refinance</label>                <br>
+                <input type="radio" name="filter" value="Browsing"  id="browsing">                  <label for="browsing">Browsing</label>                  <br>
+                <input type="radio" name="filter" value="Personal"  id="personal">                  <label for="personal">Personal</label>                  <br>
+                <input type="radio" name="filter" value="Purchase"  id="purchase">                  <label for="purchase">Purchase</label>                  <br>
+                <input type="radio" name="filter" value="Housing"   id="housing">                   <label for="housing">Housing</label>                    <br>
+                <input type="radio" name="filter" value="Auto"      id="auto">                      <label for="auto">Auto</label>                          <br>
             </form>
         </div>
 
@@ -47,7 +41,9 @@
             <!--Table row containing the map-->
             <tr class="map-row">
                 <td>
-                    <h3>State: <span>All</span></h3>
+                    <h3>State: <span id="state_label">All</span></h3>
+                    <span id="reset" style="display:none;">Reset</span>
+                    <br>
                     <svg width="700" height="500" id="choropleth_map"></svg>
                 </td>
             </tr>
@@ -57,7 +53,7 @@
                 <td>
                     <!--Bar chart heading-->
                     <div class="h2">
-                        <h2 id="barchart_heading">All Forms <span>(No filter applied)</span></h2>
+                        <h2 id="barchart_heading">All Forms s</h2>
                     </div><br>
 
                     <!--Forms started bar-->
@@ -79,18 +75,17 @@
         <div id="tooltip-container"></div>
 
         <!--Overview section-->
-        <div class="overview">
+        <div class="overview" style="display:none;">
 
             <h2>Overview:</h2>
 
             <h3>General</h3>
             <p id="total_visits">Total visits:              <span></span>   </p>
             <p id="primary_channel">Primary channel:        <span></span>   </p>
-            <p id="avg_views">Avg page views:               <span></span>   </p>
             <p id="express_offers">Express offers viewed:   <span></span>   </p>
             <p id="signups">Signups:                        <span></span>   </p>
 
-            <h3>Top 3 Forms</h3>
+            <h3>Top 3 Activities</h3>
             <p id="top_form_1">Form:                        <span></span>   </p>
             <p id="top_form_2">Form:                        <span></span>   </p>
             <p id="top_form_3">Form:                        <span></span>   </p>
