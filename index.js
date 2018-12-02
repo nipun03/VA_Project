@@ -94,7 +94,7 @@ function createBarChartStart(state_name = "") {
             bottom: 30,
             left: 5
         },
-        width = 400 - margin.left - margin.right,
+        width = 500 - margin.left - margin.right,
         height = 70 - margin.top - margin.bottom;
 
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
@@ -162,9 +162,9 @@ function createBarChartStart(state_name = "") {
     g.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) {
+        .call(d3.axisBottom(x).ticks(7).tickFormat(function(d) {
             return parseInt(d);
-        }).tickSizeInner([-height]));
+        }).tickSizeInner([-height*10]));
 
     g.append("g")
         .attr("class", "y axis")
@@ -188,6 +188,16 @@ function createBarChartStart(state_name = "") {
             return "rgb(" + color.r + "," + color.g +
                 "," + color.b + ")";
         })
+        .on("mousemove", function(d) {
+            tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html((d.key) + "<br>" + (d.value));
+        })
+        .on("mouseout", function(d) {
+            tooltip.style("display", "none");
+        });
 }
 
 
@@ -202,7 +212,7 @@ function createBarChartSubmit(state_name = "") {
             bottom: 30,
             left: 5
         },
-        width = 300 - margin.left - margin.right,
+        width = 500 - margin.left - margin.right,
         height = 70 - margin.top - margin.bottom;
 
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
@@ -263,9 +273,9 @@ function createBarChartSubmit(state_name = "") {
     g.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) {
+        .call(d3.axisBottom(x).ticks(7).tickFormat(function(d) {
             return parseInt(d);
-        }).tickSizeInner([-height]));
+        }).tickSizeInner([-height*10]));
 
     g.append("g")
         .attr("class", "y axis")
@@ -289,7 +299,19 @@ function createBarChartSubmit(state_name = "") {
             return "rgb(" + color.r + "," + color.g +
                 "," + color.b + ")";
         })
+        .on("mousemove", function(d) {
+            tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html((d.key) + "<br>" + (d.value));
+        })
+        .on("mouseout", function(d) {
+            tooltip.style("display", "none");
+        });
 }
+
+
 
 function createMap(product_reporting = "") {
     var svg = d3.select("#choropleth_map");
