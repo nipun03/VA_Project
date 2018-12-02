@@ -8,7 +8,7 @@ html, body {
             background-color: #424242;
             width: 100%;
             text-align: center;
-            padding: 1px;
+            padding: 10px;
             margin: 0;
             color: white;
         }
@@ -33,8 +33,13 @@ html, body {
         }
         
         table {
-            float: left;
-/*            border: 1px solid black;*/
+            
+            display: table;
+            margin: auto;
+            text-align: center;
+            /*text-align: center;*/
+            /*float: left;*/
+            /*border: 1px solid black;*/
 /*            padding-left: 100px;*/
         }
         
@@ -59,6 +64,7 @@ html, body {
         .map-row h3 span {
             color: #2aed93;
             color: #22c177ff;
+            color: #2051a0;
             font-weight: normal;
         }
         
@@ -129,18 +135,36 @@ html, body {
 
         p span {
             color: #2aed93;
-            color: #22c177ff;
+            color: #2051a0;
         }
 
         #reset {
             cursor: pointer;
-            color: #22c177ff;
+            color: #2051a0;
             text-decoration: underline;
         }
 
+        .motivation {
+            clear:both;
+            padding: 100px;
+            width: 40vw;
+            margin: auto;
+            text-align: justify;
+        }
 
+        .motivation h1 {
+            text-align: center;
+        }
 
+        .motivation #names {
+            margin-top:0px; 
+            /*margin-bottom:50px; */
+            text-align: center;
+        }
 
+        .motivation h3 {
+            margin-top: 50px;
+        }
 
 
  .states :hover {

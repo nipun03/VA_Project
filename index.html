@@ -7,6 +7,7 @@
         <meta name="HandheldFriendly" content="true" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="stylesheet" href="index.css">
+        <link rel="shortcut icon" type="image/png" href="favicon.png"/>
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="https://d3js.org/topojson.v2.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -19,8 +20,9 @@
 
     </head>
     <body>
-        <header>
-            <h1>Site Visit Behavior</h1>
+        <header style="text-align: center;">
+            <img src="LT_Logo.png" alt="Lending Tree Logo" width="200" >
+            <!-- <h1>Lending Tree Site Analytics</h1> -->
         </header>
 
         <div class="sidebar">
@@ -35,6 +37,27 @@
                 <input type="radio" name="filter" value="Auto"      id="auto">                      <label for="auto">Auto</label>                          <br>
             </form>
         </div>
+
+         <!--Overview section-->
+        <div class="overview" style="display:none;">
+
+            <h2>Overview:</h2>
+
+            <h3>General</h3>
+            <p id="total_visits">Total visits:              <span></span>   </p>
+            <p id="primary_channel">Primary channel:        <span></span>   </p>
+            <p id="express_offers">Express offers viewed:   <span></span>   </p>
+            <p id="signups">Signups:                        <span></span>   </p>
+
+            <h3>Top 3 Activities</h3>
+            <p id="top_form_1">#1:                        <span></span>   </p>
+            <p id="top_form_2">#2:                        <span></span>   </p>
+            <p id="top_form_3">#3:                        <span></span>   </p>
+
+        </div>
+
+        <!-- This gets displayed when the overview section is hidden to maintain spacing -->
+        <div class="overview_blank_space" style="width:315px; border:1px solid white; float:right;"></div>
 
         <table>
 
@@ -53,7 +76,7 @@
                 <td>
                     <!--Bar chart heading-->
                     <div class="h2">
-                        <h2 id="barchart_heading">All Forms s</h2>
+                        <h2 id="barchart_heading">All Forms <span id="bch_span"></span></h2>
                     </div><br>
 
                     <!--Forms started bar-->
@@ -65,7 +88,7 @@
                     <!--Forms completed bar-->
                     <div id="form_complete"><h3>Forms completed</h3></div>
                     <div class="barchart">
-                        <svg id="bar_chart_2"></svg>
+                        <svg id="bar_chart_2" width="700"></svg>
                     </div>
                 </td>
             </tr>
@@ -74,22 +97,38 @@
         <!--The tooltip that appears on map hover-->
         <div id="tooltip-container"></div>
 
-        <!--Overview section-->
-        <div class="overview" style="display:none;">
+        <div class="divider" style="clear:both; width: 80vw; margin:auto; margin-top: 150px;"><hr></div>
 
-            <h2>Overview:</h2>
+        <!-- Our team's motivation -->
+        <div class="motivation">
+            <h1 style="text-align: center;">Information About This Project</h1>
+            <p id="names">
+                <strong>Hunter | Nipun | Dhiksha | Namra | Dominic</strong>
+            </p>
+            <h3>Motivation</h3>
+            <p>
+                Our motivation and vision for this visual tool was to take data about the websites visitor behavior, 
+                as provided by LendingTree, and evaluate any trends or relationships within the data.
+            </p>
+            <p>
+                With our visualization we would like to display comparisons between the US States based on several 
+                visiting attributes and events. This visualization can be useful in narrowing the focus of advertising 
+                for specific states or regions based on their most viewed attributes.
+            </p>
+            <p>
+                We can see what people in each state are more likely to look for on the website and push that for them 
+                so they can find it easier. If people visiting the website can quickly find what they are looking for then 
+                they will not be irritated with wasted time spent on searching through forums they do not need.  This will 
+                eventually lead to better efficiency and a higher quality experience for the user.
+            </p>
 
-            <h3>General</h3>
-            <p id="total_visits">Total visits:              <span></span>   </p>
-            <p id="primary_channel">Primary channel:        <span></span>   </p>
-            <p id="express_offers">Express offers viewed:   <span></span>   </p>
-            <p id="signups">Signups:                        <span></span>   </p>
-
-            <h3>Top 3 Activities</h3>
-            <p id="top_form_1">#1:                        <span></span>   </p>
-            <p id="top_form_2">#2:                        <span></span>   </p>
-            <p id="top_form_3">#3:                        <span></span>   </p>
-
+            <h3>Summary</h3>
+            <p>
+                Looking at our visualization we found that California submitted many more forms than all other states in 
+                every single category tested. We also found that almost every state had the same top three most popular 
+                activities, which were Refinance, Browsing, and Personal. The only exceptions to this were the states 
+                Montana, New York, and Utah in which the top three activities were Refinance, Browsing, and Purchase. 
+            </p>
         </div>
         
     </body>

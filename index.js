@@ -30,15 +30,28 @@ $(document).ready(function(){
 	$('input[type=radio]').click(function(){
 		console.log($(this).val());
         createMap($(this).val());
+        createBarChartStart();
+        $('#reset').css("display", "none");
+        $('.overview').css("display", "none");
+        $('.overview_blank_space').css("display", "block");
+        if($(this).val() == "") {
+            createBarChartSubmit();
+            $('#form_complete').css("display", "block");
+        } else {
+            $('#form_complete').css("display", "none");
+            $('#bar_chart_2').empty();
+        }
 	});
 
     $("#reset").click(function(){
         // console.log()
+        state_selected = false;
         createMap($('input[name=filter]:checked').val());
         createBarChartStart();
         createBarChartSubmit();
         $(this).css("display", "none");
         $('.overview').css("display", "none");
+        $('.overview_blank_space').css("display", "block");
         // createBarChart();
     });
 });
@@ -70,6 +83,8 @@ function loadDashboard() {
 
 function createBarChartStart(state_name = "") {
 
+    // console.log("SELECTED PR: " + $('#filter_form input[name=filter]:checked').val());
+
     $('#bar_chart').empty();
 
     var svg = d3.select("#bar_chart"),
@@ -91,6 +106,7 @@ function createBarChartStart(state_name = "") {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     if (state_name == "") {
+        var product_reporting = $('#filter_form input[name=filter]:checked').val();
         $("#state_label").html("All");
         mydata = d3.nest()
             .key(function(d) {
@@ -98,11 +114,18 @@ function createBarChartStart(state_name = "") {
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
-                    return g.Form_Start;
+                    if (product_reporting == "") return g.Form_Start;
+                    else {
+                        if (product_reporting === 'Refinance') return g.Refinance;
+                        if (product_reporting === 'Browsing') return g.Browsing;
+                        if (product_reporting === 'Personal') return g.Personal;
+                        if (product_reporting === 'Purchase') return g.Purchase;
+                        if (product_reporting === 'Housing') return g.Housing;
+                        if (product_reporting === 'Auto') return g.Auto;
+                    }
                 });
             })
             .entries(dataset);
-
 
     } else {
         $("#state_label").html(state_name);
@@ -122,7 +145,7 @@ function createBarChartStart(state_name = "") {
 
 
 
-    console.log(mydata);
+    // console.log(mydata);
 
     mydata.sort(function(a, b) {
         return b.value - a.value;
@@ -191,6 +214,7 @@ function createBarChartSubmit(state_name = "") {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     if (state_name == "") {
+        var product_reporting = $('#filter_form input[name=filter]:checked').val();
         $("#state_label").html("All");
         mydata = d3.nest()
             .key(function(d) {
@@ -277,7 +301,7 @@ function createMap(product_reporting = "") {
     console.log("Product Reporting: " + product_reporting);
 
     if (product_reporting == "") {
-        $("#barchart_heading").html("All Forms ");
+        $("#barchart_heading").html("All Forms <span id=\"bch_span\"></span>");
         $("#bch_span").html("(No filter applied)");
         // $("#bch_span").html("(No filter applied)");
         mydata = d3.nest()
@@ -292,7 +316,7 @@ function createMap(product_reporting = "") {
             })
             .entries(dataset);
     } else {
-        $("#barchart_heading").html(product_reporting);
+        $("#barchart_heading").html(product_reporting + " <span id=\"bch_span\"></span>");
         $("#bch_span").html("(Filter applied)");
         // $("#barchart_heading").children()[0].html("(Filter applied)");?\
         mydata = d3.nest()
@@ -400,6 +424,7 @@ function createMap(product_reporting = "") {
             }
         })
         .on("click", function(d) {
+            $('#form_complete').css("display","block");
             $('#reset').css("display","inline-block");
             createBarChartStart(state_name_map[parseInt(d.id)])
             createBarChartSubmit(state_name_map[parseInt(d.id)])
@@ -424,6 +449,7 @@ function createMap(product_reporting = "") {
                 $('#top_form_3').find("span").html("Personal");
 
             $(".overview").css("display", "inline-block");
+            $('.overview_blank_space').css("display", "none");
             
         })
         .on("mousemove", function(d) {
