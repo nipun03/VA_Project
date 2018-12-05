@@ -197,7 +197,7 @@ function createBarChartStart(state_name = "", state_unAbv_name="") {
                 .style("left", d3.event.pageX - 50 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "inline-block")
-                .html((d.key) + "<br>" + (d.value) + "k");
+                .html((d.key) + "<br>" + (d.value));
         })
         .on("mouseout", function(d) {
             tooltip.style("display", "none");
@@ -310,7 +310,7 @@ function createBarChartSubmit(state_name = "") {
                 .style("left", d3.event.pageX - 50 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "inline-block")
-                .html((d.key) + "<br>" + (d.value) + "k");
+                .html((d.key) + "<br>" + (d.value));
         })
         .on("mouseout", function(d) {
             tooltip.style("display", "none");
