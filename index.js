@@ -481,9 +481,9 @@ function createMap(product_reporting = "") {
             var html = "";
             var val = name_id_map[parseInt(d.id)];
             html += "<div class=\"tooltip_kv\">";
-            html += "<span class=\"tooltip_key\">";
+            html += "<span class=\"tooltip_key\"><span class=\"blue\">";
             html += state_name_map[parseInt(d.id)];
-            html += " Total Visits : <span class=\"blue\">" + val + "</span><br><br>";
+            html += "</span><br>Total Visits: <span class=\"blue\">" + val + "</span><br>";
             html += "Total Visits vs. Form Submission: <span class=\"blue\">" + getVisitsToSubmissionRatio(state_name_map[parseInt(d.id)]) + "%</span>";
             html += "</span>";
             html += "</div>";
