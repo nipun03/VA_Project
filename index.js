@@ -37,8 +37,10 @@ $(document).ready(function(){
         if($(this).val() == "") {
             createBarChartSubmit();
             $('#form_complete').css("display", "block");
+            $('.percentage').css('display', 'inline-block');
         } else {
             $('#form_complete').css("display", "none");
+            $('.percentage').css('display', 'none');
             $('#bar_chart_2').empty();
         }
 	});
@@ -232,6 +234,7 @@ function createBarChartSubmit(state_name = "") {
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
+                    $('#percentage_span').html(g.ratio_submitted_vs_started+"%");
                     return g.Form_Submit;
                 });
             })
@@ -246,6 +249,7 @@ function createBarChartSubmit(state_name = "") {
             })
             .rollup(function(d) { 
                 return d3.sum(d, function(g) {
+                    $('#percentage_span').html(g.ratio_submitted_vs_started+"%");
                     return g.Form_Submit;
                 });
             })

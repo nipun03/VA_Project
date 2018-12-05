@@ -79,15 +79,29 @@ html, body {
         .bar-row td .h2 {
             width: 50%;
             height: 70px;
+            text-align: center;
+            display: inline-block;
         }
         
         .bar-row td div h2 {
-            float: right;
+/*            float: right;*/
         }
         
         .bar-row td .h2 span {
             color: gray;
             font-weight: normal;
+        }
+
+        .bar-row td .percentage {
+            width: 39%;
+            display: inline-block;
+        }
+
+        .percentage span {
+            color: #2051a0;
+            font-size: 2em;
+            font-weight: bold;
+            margin-left: 5px;
         }
         
         #form_start, #form_complete {
