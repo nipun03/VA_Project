@@ -329,7 +329,6 @@ function createMap(product_reporting = "") {
     if (product_reporting == "") {
         $("#barchart_heading").html("All Forms <span id=\"bch_span\"></span>");
         $("#bch_span").html("(No filter applied)");
-        // $("#bch_span").html("(No filter applied)");
         mydata = d3.nest()
             .key(function(d) {
                 return d.State_Code;
@@ -484,8 +483,8 @@ function createMap(product_reporting = "") {
             html += "<div class=\"tooltip_kv\">";
             html += "<span class=\"tooltip_key\">";
             html += state_name_map[parseInt(d.id)];
-            html += " Total Visits : ";
-            html += val;
+            html += " Total Visits : <span class=\"blue\">" + val + "</span><br><br>";
+            html += "Total Visits vs. Form Submission: <span class=\"blue\">" + getVisitsToSubmissionRatio(state_name_map[parseInt(d.id)]) + "%</span>";
             html += "</span>";
             html += "</div>";
 
@@ -523,6 +522,20 @@ function createMap(product_reporting = "") {
         .attr("d", path);
 
 
+}
+
+function getVisitsToSubmissionRatio(stateAbv = "") {
+    var value;
+    mydata = d3.nest()
+            .rollup(function(d) { 
+                return d3.sum(d, function(g) {
+                    value = g.ratio_submitted_vs_total;
+                });
+            })
+            .entries(dataset.filter(function(d) {
+                return d.State_Abv == stateAbv;
+            }));
+    return value;
 }
 
 function Interpolate(start, end, steps, count) {

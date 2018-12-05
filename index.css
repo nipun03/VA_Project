@@ -185,6 +185,10 @@ html, body {
             margin-top: 50px;
         }
 
+        .blue {
+            color: #2051a0;
+        }
+
 
  .states :hover {
         fill: red;
