@@ -1,5 +1,6 @@
 var dataset;
 var state_name_map = {};
+var state_name_unAbv_map = {};
 var usdata;
 var mydata;
 var COLOR_COUNTS = 9;
@@ -68,6 +69,7 @@ function loadDashboard() {
 
             for (var i = 0; i < state_names.length; i++) {
                 state_name_map[state_names[i].id] = state_names[i].code;
+                state_name_unAbv_map[state_names[i].id] = state_names[i].name;
             }
 
             d3.json("https://raw.githubusercontent.com/nipun03/VA_Project/master/Data/us-10m.json", function(error, us) {
@@ -83,7 +85,7 @@ function loadDashboard() {
 
 
 
-function createBarChartStart(state_name = "") {
+function createBarChartStart(state_name = "", state_unAbv_name="") {
 
     // console.log("SELECTED PR: " + $('#filter_form input[name=filter]:checked').val());
 
@@ -130,7 +132,7 @@ function createBarChartStart(state_name = "") {
             .entries(dataset);
 
     } else {
-        $("#state_label").html(state_name);
+        $("#state_label").html(state_unAbv_name);
         mydata = d3.nest()
             .key(function(d) {
                 return "Form Start";
@@ -227,7 +229,7 @@ function createBarChartSubmit(state_name = "") {
 
     if (state_name == "") {
         var product_reporting = $('#filter_form input[name=filter]:checked').val();
-        $("#state_label").html("All");
+//        $("#state_label").html("All");
         mydata = d3.nest()
             .key(function(d) {
                 return "Form Complete";
@@ -242,7 +244,7 @@ function createBarChartSubmit(state_name = "") {
             
 
     } else {
-        $("#state_label").html(state_name);
+//        $("#state_label").html(state_name);
         mydata = d3.nest()
             .key(function(d) {
                 return "Form Complete";
@@ -451,8 +453,8 @@ function createMap(product_reporting = "") {
         .on("click", function(d) {
             $('#form_complete').css("display","block");
             $('#reset').css("display","inline-block");
-            createBarChartStart(state_name_map[parseInt(d.id)])
-            createBarChartSubmit(state_name_map[parseInt(d.id)])
+            createBarChartStart(state_name_map[parseInt(d.id)], state_name_unAbv_map[parseInt(d.id)]);
+            createBarChartSubmit(state_name_map[parseInt(d.id)]);
             console.log("d.id: " + d.id);
             var val = name_id_map[parseInt(d.id)];
 
@@ -482,7 +484,7 @@ function createMap(product_reporting = "") {
             var val = name_id_map[parseInt(d.id)];
             html += "<div class=\"tooltip_kv\">";
             html += "<span class=\"tooltip_key\"><span class=\"blue\">";
-            html += state_name_map[parseInt(d.id)];
+            html += state_name_unAbv_map[parseInt(d.id)];
             html += "</span><br>Total Visits: <span class=\"blue\">" + val + "</span><br>";
             html += "Total Visits vs. Form Submission: <span class=\"blue\">" + getVisitsToSubmissionRatio(state_name_map[parseInt(d.id)]) + "%</span>";
             html += "</span>";
@@ -522,6 +524,10 @@ function createMap(product_reporting = "") {
         .attr("d", path);
 
 
+}
+
+function getStateUnAbvName(state_abv = "") {
+    
 }
 
 function getVisitsToSubmissionRatio(stateAbv = "") {
